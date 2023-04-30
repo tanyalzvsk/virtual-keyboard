@@ -1,0 +1,28 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin: 0 auto;
+}
+
+.main-container__title {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 32px;
+  margin: 20px auto 0;
+  color: #474787;
+}
+
+.main-container__system, .main-container__language {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 20px;
+  margin: 0 auto;
+  color: #474787;
+  }
+
+.main-container__textarea {
+  width: 700px;
+  height: 200px;
+}
+
+
