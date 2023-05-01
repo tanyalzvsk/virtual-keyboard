@@ -317,7 +317,22 @@ document.addEventListener("mousedown", (event) => {
 
 document.addEventListener("mouseup", (event) => {
     if (event.target.classList.contains("main-container__keyboard")) {
-        event.target.style.backgroundColor = "#ccae62";
-        event.target.style.borderRadius = '15%';
+        event.target.style.backgroundColor = pressedButton;
+        event.target.style.borderRadius = '50%';
     }
+        if (event.target.classList.contains('ShiftLeft')) {
+            if (usedEng) {
+              createEngKeyboard();
+            } else {
+              createRuKeyboard();
+            }
+          }
+          if (event.target.classList.contains('ShiftRight')) {
+            if (usedEng) {
+              createEngKeyboard();
+            } else {
+              createRuKeyboard();
+            }
+          }
+    
 });
