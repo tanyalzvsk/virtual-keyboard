@@ -25,4 +25,49 @@
   height: 200px;
 }
 
+.main-container__keyboard {
+  width: 700px;
+  background-color: #ffda79;
+  border-radius: 9px;
+  border: 5px solid #cc8e35;
+}
+
+.key {
+  border-radius: 9px;
+  background-color: #ccae62;
+  width: 40px;
+  height: 40px;
+  margin: 5px 0 0 5px;
+}
+
+.main-container__keyboard .Space {
+    width: 330px;
+}
+
+.main-container__keyboard .Enter, 
+.main-container__keyboard .CapsLock {
+    width: 95px;
+}
+
+.main-container__keyboard .Backspace {
+    width: 105px;
+}
+
+.main-container__keyboard .ShiftRight,
+.main-container__keyboard .ShiftLeft {
+    width: 118px;
+}
+
+.main-container__keyboard .Tab {
+    width: 105px;
+}
+
+.main-container__keyboard .OptLeft,
+.main-container__keyboard .CmdLeft,
+.main-container__keyboard .CtrlLeft,
+.main-container__keyboard .OptRight,
+.main-container__keyboard .CmdRight,
+.main-container__keyboard .CtrlRight {
+    width: 55px;
+}
 
