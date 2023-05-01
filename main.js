@@ -26,7 +26,7 @@ language.classList.add('main-container__language');
 textArea.setAttribute("readonly", true);
 let usedEng = false;
 let pressedShift = false;
-let pressedButton = '#ffb142';
+let pressedButton = '#cc8e35';
 const userLanguage = document.documentElement.lang;
 if (userLanguage == "en") {
     usedEng = true;
@@ -149,6 +149,7 @@ if (usedEng) {
     createRuKeyboard();
 }
 
+let value = textArea.value;
 document.addEventListener("keydown", (event) => {
     if (event.code === 'CapsLock' && event.shiftKey) {
         if (usedEng) {
@@ -165,18 +166,66 @@ document.addEventListener("keydown", (event) => {
     if (event.ctrlKey && event.shiftKey && usedEng) {
         createRuKeyboard();
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderColor = pressedButton;
         document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     } else if (event.ctrlKey && event.shiftKey && !usedEng) {
         createEngKeyboard()
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderColor = pressedButton;
         document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     } else if (event.ctrlKey && event.shiftKey && !usedEng) {
         createEngKeyboardUsingCaps()
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
         document.querySelector(`.${event.code}`).style.borderRadius = '50%';
+        document.querySelector(`.${event.code}`).style.borderColor = pressedButton;
     } else if (event.ctrlKey && event.shiftKey && usedEng) {
         createRuKeyboardUsingCaps()
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderColor = pressedButton;
         document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     }
-}); 
+
+    if (event.code === "Tab") {
+        value += " ".repeat(4);
+        textArea.value = value;
+        document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+    }
+
+    if (event.code === "Enter") {
+        value += "\n";
+        textArea.value = value;
+        document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+    }
+
+    if (event.code === "Backspace") {
+        if (event.code === 'Backspace') {
+        const currentValue = textArea.value;
+            const newValue = currentValue.slice(0, -1);
+            textArea.value = newValue;
+        }
+    }
+    const specialKeys = ['Tab', 'ControlLeft', 'CapsLock', 'AltLeft', 'ControlRight', 'AltRight', 'Backspace', 'Enter', 'ShiftLeft', 'Delete', 'ShiftRight'];
+
+    if (!specialKeys.includes(event.code) && document.querySelector(`.${event.code}`) !== null) {
+    
+        textArea.value += document.querySelector(`.${event.code}`).innerHTML;
+        document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderRadius = '50%';
+    } else if (document.querySelector(`.${event.code}`) !== null) {
+        // Handle key press for ignored keys
+        event.preventDefault();
+    }
+});
+
+
+document.addEventListener("keyup", (event) => {
+    if (document.querySelector(`.${event.code}`) !== null) {
+        document.querySelector(`.${event.code}`).style.backgroundColor = "#red";
+        document.querySelector(`.${event.code}`).style.borderRadius = '15%';
+        if (event.key === 'Shift' && isEng) {
+          createEngKeyboard();
+        } else if (event.key === 'Shift' && !isEng) {
+          createRuKeyboard();
+        }
+      }
+});
