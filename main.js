@@ -14,7 +14,7 @@ mainContainer.appendChild(language);
 
 projectTitle.textContent = "Virtual keyboard for RSS";
 operationSystem.textContent = "The task is made using Mac.";
-language.textContent = "To use another language use combination 'ctrl + space'.";
+language.textContent = "To use another language use combination 'ctrl + shift'.";
 
 mainContainer.classList.add('main-container');
 projectTitle.classList.add('main-container__title');
@@ -24,8 +24,9 @@ operationSystem.classList.add('main-container__system');
 language.classList.add('main-container__language');
 
 textArea.setAttribute("readonly", true);
-let usedEng = true;
-
+let usedEng = false;
+let pressedShift = false;
+let pressedButton = '#ffb142';
 const userLanguage = document.documentElement.lang;
 if (userLanguage == "en") {
     usedEng = true;
@@ -34,6 +35,7 @@ else {
     usedEng = false;
 }
 console.log(usedEng);
+
 
 const codeArr1 = ['Backquote', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace'];
 const symbolArr1E = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'];
@@ -98,6 +100,7 @@ function createEngKeyboard() {
     createKeyboard(codeArr4, symbolArr4E);
     createKeyboard(codeArr5, symbolArr5E);
     usedEng = true;
+    pressedShift = false;
 }
 
 
@@ -109,6 +112,7 @@ function createRuKeyboard() {
     createKeyboard(codeArr4, symbolArr4Ru);
     createKeyboard(codeArr5, symbolArr5E);
     usedEng = false;
+    pressedShift = false;
 }
 
 function createEngKeyboardUsingCaps() {
@@ -119,6 +123,7 @@ function createEngKeyboardUsingCaps() {
     createKeyboard(codeArr4, capsSymbolsE4);
     createKeyboard(codeArr5, symbolArr5E);
     usedEng = true;
+    pressedShift = true;
 }
 
 
@@ -130,6 +135,7 @@ function createRuKeyboardUsingCaps() {
     createKeyboard(codeArr4, capsSymbolsRu4);
     createKeyboard(codeArr5, symbolArr5E);
     usedEng = false;
+    pressedShift = true;
 }
 
 
@@ -143,3 +149,34 @@ if (usedEng) {
     createRuKeyboard();
 }
 
+document.addEventListener("keydown", (event) => {
+    if (event.code === 'CapsLock' && event.shiftKey) {
+        if (usedEng) {
+            createEngKeyboardUsingCaps();
+            document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+            document.querySelector(`.${event.code}`).style.borderRadius = '50%';
+        }
+        else {
+            createRuKeyboardUsingCaps();
+            document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+            document.querySelector(`.${event.code}`).style.borderRadius = '50%';
+        }
+    }
+    if (event.ctrlKey && event.shiftKey && usedEng) {
+        createRuKeyboard();
+        document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderRadius = '50%';
+    } else if (event.ctrlKey && event.shiftKey && !usedEng) {
+        createEngKeyboard()
+        document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderRadius = '50%';
+    } else if (event.ctrlKey && event.shiftKey && !usedEng) {
+        createEngKeyboardUsingCaps()
+        document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderRadius = '50%';
+    } else if (event.ctrlKey && event.shiftKey && usedEng) {
+        createRuKeyboardUsingCaps()
+        document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderRadius = '50%';
+    }
+}); 
