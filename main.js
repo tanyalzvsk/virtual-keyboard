@@ -36,7 +36,7 @@ if (localStorage.getItem('en') === 'true') {
 else {
     console.log(usedEng);
     usedEng = false;
-    
+
 }
 console.log(usedEng);
 
@@ -194,13 +194,19 @@ document.addEventListener("keydown", (event) => {
     }
 
     if (event.code === "Tab") {
-        value += " ".repeat(4);
-        textArea.value = value;
+        const spaces = "    ";
+        const cursorPosition = textArea.selectionStart;
+        const text = textArea.value;
+        const newText = text.slice(0, cursorPosition) + spaces + text.slice(cursorPosition);
+        textArea.value = newText;
+        textArea.selectionEnd = cursorPosition + 4;
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
         document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     }
 
     if (event.code === "Enter") {
+        event.preventDefault();
+        const previousValue = textArea.value;
         value += "\n";
         textArea.value = value;
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
@@ -247,6 +253,37 @@ document.addEventListener("keyup", (event) => {
 });
 
 document.addEventListener("mousedown", (event) => {
+    if (event.target.classList.contains('Tab')) {
+        const spaces = "    ";
+        const cursorPosition = textArea.selectionStart;
+        const text = textArea.value;
+        const newText = text.slice(0, cursorPosition) + spaces + text.slice(cursorPosition);
+        textArea.value = newText;
+        textArea.selectionEnd = cursorPosition + 4;
+        event.target.style.backgroundColor = pressedButton;
+        event.target.style.borderRadius = '50%';
+    }
+    if (event.target.classList.contains('Backspace')) {
+        const currentValue = textArea.value;
+        const newValue = currentValue.slice(0, -1);
+        textArea.value = newValue;
+        event.target.style.backgroundColor = pressedButton;
+        event.target.style.borderRadius = '50%';
+    }
+    if (event.target.classList.contains('Enter')) {
+        event.preventDefault();
+        const previousValue = textArea.value;
+        value += "\n";
+        textArea.value = value;
+        event.target.style.backgroundColor = pressedButton;
+        event.target.style.borderRadius = '50%';
+    }
 });
-   
 
+
+document.addEventListener("mouseup", (event) => {
+    if (event.target.classList.contains("main-container__keyboard")) {
+        event.target.style.backgroundColor = "#ccae62";
+        event.target.style.borderRadius = '15%';
+      }
+});
