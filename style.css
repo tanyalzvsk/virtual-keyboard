@@ -37,7 +37,6 @@
 .key {
   border-radius: 9px;
   background-color: #ccae62;
-  border-color: #ccae62;
   width: 40px;
   height: 40px;
   margin: 5px 0 0 5px;
@@ -69,12 +68,12 @@
     width: 105px;
 }
 
-.main-container__keyboard .OptLeft,
-.main-container__keyboard .CmdLeft,
-.main-container__keyboard .CtrlLeft,
-.main-container__keyboard .OptRight,
-.main-container__keyboard .CmdRight,
-.main-container__keyboard .CtrlRight {
+.main-container__keyboard .ControlLeft,
+.main-container__keyboard .MetaLeft,
+.main-container__keyboard .AltLeft,
+.main-container__keyboard .ControlRight,
+.main-container__keyboard .MetaRight,
+.main-container__keyboard .AltRight {
     width: 55px;
 }
 

@@ -27,12 +27,16 @@ textArea.setAttribute("readonly", true);
 let usedEng = false;
 let pressedShift = false;
 let pressedButton = '#cc8e35';
-const userLanguage = document.documentElement.lang;
-if (userLanguage == "en") {
+
+const userLang = navigator.language || navigator.userLanguage;
+
+if (localStorage.getItem('en') === 'true') {
     usedEng = true;
 }
 else {
+    console.log(usedEng);
     usedEng = false;
+    
 }
 console.log(usedEng);
 
@@ -53,7 +57,7 @@ const codeArr4 = ['ShiftLeft', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', '
 const symbolArr4E = ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'Shift'];
 
 
-const codeArr5 = ['CtrlLeft', 'OptLeft', 'CmdLeft', 'Space', 'CmdRight', 'OptRight', 'CtrlRight'];
+const codeArr5 = ['ControlLeft', 'AltLeft', 'MetaLeft', 'Space', 'MetaRight', 'AltRight', 'ControlRight'];
 const symbolArr5E = ['Ctrl', 'Opt', 'Cmd', ' ', 'Cmd', 'Opt', 'Ctrl'];
 
 const capsSymbolsE1 = ['~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'Backspace'];
@@ -101,6 +105,7 @@ function createEngKeyboard() {
     createKeyboard(codeArr5, symbolArr5E);
     usedEng = true;
     pressedShift = false;
+    localStorage.setItem('en', 'true');
 }
 
 
@@ -113,6 +118,7 @@ function createRuKeyboard() {
     createKeyboard(codeArr5, symbolArr5E);
     usedEng = false;
     pressedShift = false;
+    localStorage.setItem('en', 'false');
 }
 
 function createEngKeyboardUsingCaps() {
@@ -124,6 +130,7 @@ function createEngKeyboardUsingCaps() {
     createKeyboard(codeArr5, symbolArr5E);
     usedEng = true;
     pressedShift = true;
+    localStorage.setItem('en', 'true');
 }
 
 
@@ -136,6 +143,7 @@ function createRuKeyboardUsingCaps() {
     createKeyboard(codeArr5, symbolArr5E);
     usedEng = false;
     pressedShift = true;
+    localStorage.setItem('en', 'false');
 }
 
 
@@ -189,30 +197,37 @@ document.addEventListener("keydown", (event) => {
         value += " ".repeat(4);
         textArea.value = value;
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     }
 
     if (event.code === "Enter") {
         value += "\n";
         textArea.value = value;
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     }
 
     if (event.code === "Backspace") {
-        if (event.code === 'Backspace') {
         const currentValue = textArea.value;
-            const newValue = currentValue.slice(0, -1);
-            textArea.value = newValue;
-        }
+        const newValue = currentValue.slice(0, -1);
+        textArea.value = newValue;
+        document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     }
-    const specialKeys = ['Tab', 'ControlLeft', 'CapsLock', 'AltLeft', 'ControlRight', 'AltRight', 'Backspace', 'Enter', 'ShiftLeft', 'Delete', 'ShiftRight'];
+    if (event.code === "ControlLeft" || "ControlRight" || "MetaLeft" || "MetaRight" || "AltLeft" || "AltRight") {
+        document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
+        document.querySelector(`.${event.code}`).style.borderRadius = '50%';
+    }
+
+    const specialKeys = ['Tab', 'MetaLeft', 'ControlRight', 'ControlLeft', 'CapsLock', 'AltLeft', 'MetaRight', 'AltRight', 'Backspace', 'Enter', 'ShiftLeft', 'ShiftRight'];
 
     if (!specialKeys.includes(event.code) && document.querySelector(`.${event.code}`) !== null) {
-    
+
         textArea.value += document.querySelector(`.${event.code}`).innerHTML;
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
         document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     } else if (document.querySelector(`.${event.code}`) !== null) {
-        // Handle key press for ignored keys
+
         event.preventDefault();
     }
 });
@@ -220,12 +235,18 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("keyup", (event) => {
     if (document.querySelector(`.${event.code}`) !== null) {
-        document.querySelector(`.${event.code}`).style.backgroundColor = "#red";
+        document.querySelector(`.${event.code}`).style.backgroundColor = "#ccae62";
         document.querySelector(`.${event.code}`).style.borderRadius = '15%';
-        if (event.key === 'Shift' && isEng) {
-          createEngKeyboard();
-        } else if (event.key === 'Shift' && !isEng) {
-          createRuKeyboard();
+
+        if (event.key === 'Shift' && usedEng) {
+            createEngKeyboard();
+        } else if (event.key === 'Shift' && !usedEng) {
+            createRuKeyboard();
         }
-      }
+    }
 });
+
+document.addEventListener("mousedown", (event) => {
+});
+   
+
