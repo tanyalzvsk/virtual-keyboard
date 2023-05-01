@@ -158,6 +158,9 @@ if (usedEng) {
 }
 
 let value = textArea.value;
+const specialKeys = ['Tab', 'MetaLeft', 'ControlRight', 'ControlLeft', 'CapsLock', 'AltLeft', 'MetaRight', 'AltRight', 'Backspace', 'Enter', 'ShiftLeft', 'ShiftRight'];
+
+
 document.addEventListener("keydown", (event) => {
     if (event.code === 'CapsLock' && event.shiftKey) {
         if (usedEng) {
@@ -225,15 +228,12 @@ document.addEventListener("keydown", (event) => {
         document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     }
 
-    const specialKeys = ['Tab', 'MetaLeft', 'ControlRight', 'ControlLeft', 'CapsLock', 'AltLeft', 'MetaRight', 'AltRight', 'Backspace', 'Enter', 'ShiftLeft', 'ShiftRight'];
-
     if (!specialKeys.includes(event.code) && document.querySelector(`.${event.code}`) !== null) {
 
         textArea.value += document.querySelector(`.${event.code}`).innerHTML;
         document.querySelector(`.${event.code}`).style.backgroundColor = pressedButton;
         document.querySelector(`.${event.code}`).style.borderRadius = '50%';
     } else if (document.querySelector(`.${event.code}`) !== null) {
-
         event.preventDefault();
     }
 });
@@ -253,6 +253,29 @@ document.addEventListener("keyup", (event) => {
 });
 
 document.addEventListener("mousedown", (event) => {
+    if (event.target.classList.contains('CapsLock')) {
+        if (pressedShift) {
+            if (usedEng) {
+                deleteKeyboard();
+                createEngKeyboardUsingCaps();
+            }
+            else {
+                deleteKeyboard();
+                createRuKeyboardUsingCaps();
+            }
+        }
+        else if (!pressedShift) {
+            deleteKeyboard();
+            createEngKeyboard();
+
+        }
+        else {
+            deleteKeyboard();
+            createRuKeyboard();
+        }
+        event.target.style.backgroundColor = pressedButton;
+        event.target.style.borderRadius = '50%';
+    }
     if (event.target.classList.contains('Tab')) {
         const spaces = "    ";
         const cursorPosition = textArea.selectionStart;
@@ -278,6 +301,17 @@ document.addEventListener("mousedown", (event) => {
         event.target.style.backgroundColor = pressedButton;
         event.target.style.borderRadius = '50%';
     }
+    if (event.target.classList.contains("ControlLeft") || event.target.classList.contains("ControlRight") || event.target.classList.contains("MetaLeft") || event.target.classList.contains("MetaRight") || event.target.classList.contains("AltLeft") || event.target.classList.contains("AltRight")) {
+        event.target.style.backgroundColor = pressedButton;
+        event.target.style.borderRadius = '50%';
+    }
+    if (!specialKeys && event.target !== null && event.target.classList.contains('key')) {
+        textArea.value += event.target.innerHTML;
+        event.target.style.backgroundColor = pressedButton;
+        event.target.style.borderRadius = '50%';
+    } else if (event.target !== null) {
+        event.preventDefault();
+    }
 });
 
 
@@ -285,5 +319,5 @@ document.addEventListener("mouseup", (event) => {
     if (event.target.classList.contains("main-container__keyboard")) {
         event.target.style.backgroundColor = "#ccae62";
         event.target.style.borderRadius = '15%';
-      }
+    }
 });
